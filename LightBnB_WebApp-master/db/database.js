@@ -9,14 +9,17 @@ const users = require("./json/users.json");
  * @return {Promise<{}>} A promise to the user.
  */
 const getUserWithEmail = function (email) {
-  let resolvedUser = null;
-  for (const userId in users) {
-    const user = users[userId];
-    if (user?.email.toLowerCase() === email?.toLowerCase()) {
-      resolvedUser = user;
-    }
-  }
-  return Promise.resolve(resolvedUser);
+	let resolvedUser = null;
+	for (const userId in users) {
+		const user = users[userId];
+		if (user && email) {
+			//it was originally if (user?.email.toLowerCase() === email?.toLowerCase()) but caused an error and crushes it so rewrite it little bit
+			if (user.email.toLowerCase() === email.toLowerCase()) {
+				resolvedUser = user;
+			}
+		}
+	}
+	return Promise.resolve(resolvedUser);
 };
 
 /**
@@ -25,7 +28,7 @@ const getUserWithEmail = function (email) {
  * @return {Promise<{}>} A promise to the user.
  */
 const getUserWithId = function (id) {
-  return Promise.resolve(users[id]);
+	return Promise.resolve(users[id]);
 };
 
 /**
@@ -34,10 +37,10 @@ const getUserWithId = function (id) {
  * @return {Promise<{}>} A promise to the user.
  */
 const addUser = function (user) {
-  const userId = Object.keys(users).length + 1;
-  user.id = userId;
-  users[userId] = user;
-  return Promise.resolve(user);
+	const userId = Object.keys(users).length + 1;
+	user.id = userId;
+	users[userId] = user;
+	return Promise.resolve(user);
 };
 
 /// Reservations
@@ -48,7 +51,7 @@ const addUser = function (user) {
  * @return {Promise<[{}]>} A promise to the reservations.
  */
 const getAllReservations = function (guest_id, limit = 10) {
-  return getAllProperties(null, 2);
+	return getAllProperties(null, 2);
 };
 
 /// Properties
@@ -60,11 +63,11 @@ const getAllReservations = function (guest_id, limit = 10) {
  * @return {Promise<[{}]>}  A promise to the properties.
  */
 const getAllProperties = function (options, limit = 10) {
-  const limitedProperties = {};
-  for (let i = 1; i <= limit; i++) {
-    limitedProperties[i] = properties[i];
-  }
-  return Promise.resolve(limitedProperties);
+	const limitedProperties = {};
+	for (let i = 1; i <= limit; i++) {
+		limitedProperties[i] = properties[i];
+	}
+	return Promise.resolve(limitedProperties);
 };
 
 /**
@@ -73,17 +76,17 @@ const getAllProperties = function (options, limit = 10) {
  * @return {Promise<{}>} A promise to the property.
  */
 const addProperty = function (property) {
-  const propertyId = Object.keys(properties).length + 1;
-  property.id = propertyId;
-  properties[propertyId] = property;
-  return Promise.resolve(property);
+	const propertyId = Object.keys(properties).length + 1;
+	property.id = propertyId;
+	properties[propertyId] = property;
+	return Promise.resolve(property);
 };
 
 module.exports = {
-  getUserWithEmail,
-  getUserWithId,
-  addUser,
-  getAllReservations,
-  getAllProperties,
-  addProperty,
+	getUserWithEmail,
+	getUserWithId,
+	addUser,
+	getAllReservations,
+	getAllProperties,
+	addProperty,
 };
