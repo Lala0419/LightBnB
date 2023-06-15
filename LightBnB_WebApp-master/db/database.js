@@ -1,5 +1,19 @@
 const properties = require("./json/properties.json");
 const users = require("./json/users.json");
+const pg = require("pg");
+const Pool = pg.Pool;
+const config = {
+	user: "vagrant",
+	password: "123",
+	host: "localhost",
+	database: "lightbnb",
+};
+
+const pool = new Pool(config);
+
+pool.query(`SELECT title FROM properties LIMIT 10;`).then((response) => {
+	//console.log(response);
+});
 
 /// Users
 
@@ -9,19 +23,22 @@ const users = require("./json/users.json");
  * @return {Promise<{}>} A promise to the user.
  */
 const getUserWithEmail = function (email) {
-	let resolvedUser = null;
-	for (const userId in users) {
-		const user = users[userId];
-		if (user && email) {
-			//it was originally if (user?.email.toLowerCase() === email?.toLowerCase()) but caused an error and crushes it so rewrite it little bit
-			if (user.email.toLowerCase() === email.toLowerCase()) {
-				resolvedUser = user;
-			}
-		}
-	}
-	return Promise.resolve(resolvedUser);
+	return pool
+		.query(
+			`
+			SELECT * 
+			FROM users
+			WHERE email = $1`,
+			[email]
+		)
+		.then((result) => {
+			console.log("result,row", result.rows);
+			return result.rows[0];
+		})
+		.catch((err) => {
+			console.log(err.message);
+		});
 };
-
 /**
  * Get a single user from the database given their id.
  * @param {string} id The id of the user.
@@ -51,7 +68,7 @@ const addUser = function (user) {
  * @return {Promise<[{}]>} A promise to the reservations.
  */
 const getAllReservations = function (guest_id, limit = 10) {
-	return getAllProperties(null, 2);
+	return getAllProperties(null);
 };
 
 /// Properties
@@ -63,13 +80,22 @@ const getAllReservations = function (guest_id, limit = 10) {
  * @return {Promise<[{}]>}  A promise to the properties.
  */
 const getAllProperties = function (options, limit = 10) {
-	const limitedProperties = {};
-	for (let i = 1; i <= limit; i++) {
-		limitedProperties[i] = properties[i];
-	}
-	return Promise.resolve(limitedProperties);
+	console.log("limit:", limit);
+	return pool
+		.query(`SELECT * FROM properties LIMIT $1`, [limit])
+		.then((result) => {
+			//	console.log(result.rows);
+			return result.rows;
+		})
+		.catch((err) => {
+			console.log(err.message);
+			// const limitedProperties = {};
+			// for (let i = 1; i <= limit; i++) {
+			// 	limitedProperties[i] = properties[i];
+			// }
+			// return Promise.resolve(limitedProperties);
+		});
 };
-
 /**
  * Add a property to the database
  * @param {{}} property An object containing all of the property details.
