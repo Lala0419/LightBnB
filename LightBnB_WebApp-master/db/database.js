@@ -1,15 +1,15 @@
-const { query } = require("express");
-const properties = require("./json/properties.json");
-const users = require("./json/users.json");
+// const properties = require("./json/properties.json");
+// const users = require("./json/users.json");
 const pg = require("pg");
 const Pool = pg.Pool;
 const config = {
-	user: "vagrant",
-	password: "123",
-	host: "localhost",
-	database: "lightbnb",
+	host: process.env.DATABASE_HOST,
+	port: process.env.DATABASE_PORT,
+	database: process.env.DATABASE_NAME,
+	password: process.env.DATABASE_PASSWORD,
+	user: process.env.DATABASE_USERNAME,
 };
-
+console.log("config", config);
 const pool = new Pool(config);
 
 pool.query(`SELECT title FROM properties LIMIT 10;`).then((response) => {
