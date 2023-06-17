@@ -9,12 +9,8 @@ const config = {
 	password: process.env.DATABASE_PASSWORD,
 	user: process.env.DATABASE_USERNAME,
 };
-console.log("config", config);
-const pool = new Pool(config);
 
-pool.query(`SELECT title FROM properties LIMIT 10;`).then((response) => {
-	//console.log(response);
-});
+const pool = new Pool(config);
 
 /// Users
 
@@ -33,7 +29,6 @@ const getUserWithEmail = function (email) {
 			[email]
 		)
 		.then((result) => {
-			//console.log("result,row", result.rows);
 			return result.rows[0];
 		})
 		.catch((err) => {
@@ -103,7 +98,6 @@ const getAllReservations = function (guest_id, limit = 10) {
 			[guest_id, limit]
 		)
 		.then((result) => {
-			console.log("result:", result);
 			return result.rows;
 		});
 };
@@ -196,7 +190,6 @@ const addProperty = function (property) {
 	 RETURNING *;
 		`;
 
-	console.log("queryString:", queryString, "values:", values);
 	return pool.query(queryString, values).then((result) => {
 		return result.rows[0];
 	});

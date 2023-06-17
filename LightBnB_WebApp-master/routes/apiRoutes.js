@@ -26,7 +26,6 @@ router.get("/reservations", (req, res) => {
 			console.error(e);
 			res.send(e);
 		});
-	console.log("userId:", userId);
 });
 
 router.post("/properties", (req, res) => {
