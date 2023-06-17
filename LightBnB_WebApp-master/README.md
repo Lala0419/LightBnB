@@ -7,8 +7,8 @@ A simple multi-page Airbnb clone that uses a server-side Javascript to display t
 1. [Create](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) a new repository using this repository as a template.
 2. Clone your repository onto your local device.
 3. Install dependencies using the `npm install` command.
-4. Start the web server using the `npm run local` command. The app will be served at <http://localhost:3000/>.
-5. Go to <http://localhost:3000/> in your browser.
+4. Start the web server using the `npm run local` command. The app will be served at <http://localhost:3030/>.
+5. Go to <http://localhost:3030/> in your browser.
 
 ## Dependencies
 
@@ -16,6 +16,7 @@ A simple multi-page Airbnb clone that uses a server-side Javascript to display t
 - cookie-session
 - express
 - pg
+- dotenv
 
 ## Project Structure
 
