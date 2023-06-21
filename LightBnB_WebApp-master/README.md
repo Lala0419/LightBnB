@@ -2,6 +2,13 @@
 
 A simple multi-page Airbnb clone that uses a server-side Javascript to display the information from queries to web pages via SQL queries.
 
+## SetUp Database
+
+1. go look into .env.example file
+2. create your own .env and fill out the database credentials to connet to a database
+3. run command `\i seeds/seeds/02_seeds.sql`
+4.  run command `\i migrations/01_schema.sql`
+
 ## Getting Started
 
 1. [Create](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) a new repository using this repository as a template.
